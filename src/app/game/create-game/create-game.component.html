@@ -1,0 +1,32 @@
+<h3>Create Game</h3>
+<div [hidden]="submitted">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div class="row justify-content-center">
+          <label for="competition">Competition</label>
+          <select class="form-control" name="competition" id="competition" [(ngModel)]="game.competition">
+            <option value="LTCR">LTCR</option>
+            <option value="SUMO">SUMO</option>
+            <option value="JUNIOR">JUNIOR</option>
+          </select>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-6">
+            <label for="competition">Team 1</label>
+            <select class="form-control" name="team1" id="team1" [(ngModel)]="selectedTeam1">
+              <option *ngFor="let team of teams" value="{{ team.name }}">{{ team.name }}</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <label for="competition">Team 1</label>
+            <select class="form-control" name="team1" id="team1" [(ngModel)]="selectedTeam2">
+              <option *ngFor="let team of teams" value="{{ team.name }}">{{ team.name }}</option>
+            </select>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>

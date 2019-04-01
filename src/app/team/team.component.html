@@ -1,0 +1,24 @@
+<h3>Teams</h3>
+<div class="btn btn-success" routerLink="/teams/add">Add Team</div>
+<div class="row justify-content-center">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Competition</th>
+            <th scope="col">Logo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let team of teams | async">
+            <th scope="row">{{ team.id }}</th>
+            <td>{{ team.name }}</td>
+            <td>{{ team.competition }}</td>
+            <td>{{ team.image }}</td>
+            <td><div class="btn btn-danger" (click)='deleteTeam(team.name)'>Delete</div></td>
+          </tr>
+        </tbody>
+      </table>
+</div>

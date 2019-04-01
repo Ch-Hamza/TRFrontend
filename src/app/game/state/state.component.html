@@ -1,0 +1,19 @@
+<div>
+    <div *ngIf='timer' class="row justify-content-center">{{ timer }}</div>
+    <div *ngIf="router.url === '/game'">
+        <div *ngIf='timer' class="row justify-content-center">
+            Competition: {{ game.competition }}
+        </div>
+        <div *ngIf='timer' class="row justify-content-center">
+            Game State: {{ game.state }}
+        </div>
+    </div>
+    
+    <div class="row justify-content-center mt-5">
+        <div class="col-6 text-center" *ngFor="let team of game.teams">
+            <div>Team Name: {{ team.name }}</div>
+            <div>Team Logo: {{ team.image }}</div>
+            <div>Team Score: {{ team.score }}</div>
+        </div>
+    </div>
+</div>
