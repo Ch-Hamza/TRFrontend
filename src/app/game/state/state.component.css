@@ -24,10 +24,12 @@
     font-family: Nasalization;
 }
 
-.get-ready {
-    font-size: 5em;
-    color: #8A1112;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+.comp-name {
+    font-family: Nasalization;
+    font-size: 1.5em;
+    color: #072340;
+    font-weight: 700;
+    margin-top: -15px;
 }
 
 .team-name {
@@ -90,38 +92,169 @@
     position: absolute;
 }
 
-/* Bottom left text */
 .left-left {
-    top: 20%;
-    left: 15.5%;
+    top: 25%;
+    left: 10.5%;
 }
 
 .left {
-    top: 32.5%;
+    top: 37.5%;
     left: 20%;
     font-size: 1.8em;
     font-weight: 600;
     font-family: Nasalization;
 }
 
-/* Centered text */
 .centered {
-    top: 55.3%;
-    left: 50.9%;
+    top: 60%;
+    left: 50.1%;
     transform: translate(-50%, -50%);
 }
 
 .right-right {
-    top: 20%;
-    right: 14%;
+    top: 25%;
+    right: 10.5%;
 }
 
 .right {
-    top: 32.5%;
+    top: 37.5%;
     right: 20%;
     font-size: 1.8em;
     font-weight: 600;
     font-family: Nasalization;
+}
+
+.left-left1 {
+    top: 24%;
+    left: -3%;
+}
+
+.left1 {
+    top: 35.5%;
+    left: 13%;
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: Nasalization;
+}
+
+.centered1 {
+    top: 41%;
+    left: 51.4%;
+    transform: translate(-50%, -50%);
+}
+
+.right-right1 {
+    top: 24%;
+    right: -5%;
+}
+
+.right1 {
+    top: 36.5%;
+    right: 13%;
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: Nasalization;
+}
+
+.left-left-ready {
+    top: 71%;
+    left: 21%;
+}
+
+.left-ready {
+    top: 73.8%;
+    left: 23%;
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: Nasalization;
+}
+
+.centered-ready {
+    top: 77%;
+    left: 50.1%;
+    transform: translate(-50%, -50%);
+}
+
+.right-right-ready {
+    top: 71%;
+    right: 21%;
+}
+
+.right-ready {
+    top: 73.5%;
+    right: 25%;
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: Nasalization;
+}
+
+@media screen and (min-width: 1500px) {
+    .left-left-ready {
+        top: 64%;
+        left: 29%;
+    }
+    
+    .left-ready {
+        top: 65%;
+        left: 28%;
+        font-size: 1.8em;
+        font-weight: 600;
+        font-family: Nasalization;
+    }
+    
+    .centered-ready {
+        top: 67%;
+        left: 50.1%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .right-right-ready {
+        top: 64%;
+        right: 29%;
+    }
+    
+    .right-ready {
+        top: 65%;
+        right: 28%;
+        font-size: 1.8em;
+        font-weight: 600;
+        font-family: Nasalization;
+    }
+}
+
+.score1pos {
+    color:  white;
+    font-family: Azonix;
+    font-size: 3.5em;
+    left: 0%;
+    top: 130%;
+}
+
+.score2pos {
+    color:  white;
+    font-family: Azonix;
+    font-size: 3.5em;
+    right: 40%;
+    top: 130%;
+}
+
+.start-clock countdown {
+    font-size: 80px !important;
+}
+
+.centered-two {
+    font-family: Azonix;
+    color: #0D2843;
+    font-size: 2em !important;
+}
+
+.clock-waiting {
+    font-size: 80px !important;
+    margin-top: 10%;
+}
+
+.start-clock {
+    top: 85% !important;
 }
 
 input[type="radio"] {
@@ -156,4 +289,8 @@ input[type="radio"] {
     .last-radio2 {
         margin-top: -15px !important;
     }
+}
+
+.delay-scoreboard {
+    animation-delay: 1s;
 }

@@ -15,7 +15,6 @@ export class GameComponent implements OnInit {
   timer: Number=0;
   currentState: string;
   timerInterval;
-  intervalId;
   authority: any;
 
   constructor(private gameService: GameService, 
@@ -24,7 +23,6 @@ export class GameComponent implements OnInit {
 
   ngOnDestroy() {
     clearInterval(this.timerInterval);
-    clearInterval(this.intervalId);
   }
 
   ngOnInit() {
@@ -38,10 +36,8 @@ export class GameComponent implements OnInit {
           this.game = data;
           //console.log(this.currentState);
           if(Number(this.game.state) != Number(this.currentState)) {
-            //window.location.reload();
             this.reloadData();
             this.dynamicState();
-            //this.stateComponent.reload();
           }else {
             this.currentState = this.game.state;
           }
@@ -57,6 +53,7 @@ export class GameComponent implements OnInit {
         //console.log(data);
         this.game = data;
         this.currentState = data.state;
+        this.timer = 0;
         this.dynamicState();
       },
       error => console.log(error)
@@ -77,15 +74,23 @@ export class GameComponent implements OnInit {
     //console.log(this.game);
     switch(this.game.state) { 
         case '1': {
+          this.timer = 0;
           this.timerConfig(60, 2);
           break; 
         } 
         case '2': {
-          this.timerConfig(5, 3);
+          this.timer = 0;
+          this.timerConfig(6, 3);
           break; 
         }
         case '3': {
-          this.threeToFour(120); 
+          this.timer = 0;
+          if(this.game.competition === "SUMO") {
+            this.threeToFour(180); 
+          }
+          else {
+            this.threeToFour(120); 
+          }
           break; 
         } 
         default: {
@@ -96,30 +101,27 @@ export class GameComponent implements OnInit {
 
   timerConfig(timeVal, stateVal) {
     let time = timeVal;
-    this.timer = timeVal;
-    this.intervalId = setInterval(() => {
+    this.timer = time;
+    /*let intervalId = setInterval(() => {
       time = time - 1;
-      //console.log(time)
       if(time === 0) {
-        clearInterval(this.intervalId);
+        clearInterval( intervalId);
         //this.onChange(stateVal);
       }
-    }, 1000)
+    }, 1000)*/
     
   }
 
   threeToFour(timeVal) {
     let time = timeVal;
     this.timer = time;
-    this.intervalId = setInterval(() => {
+    /*let intervalId = setInterval(() => {
       time = time - 1;
-      //console.log(time)
       if(time === 0) {
-        clearInterval(this.intervalId);
-        //console.log(this.game);
+        clearInterval(intervalId);
         //this.onChange(4);
         this.timer = null;
       }
-    }, 1000)
+    }, 1000)*/
   }
 }

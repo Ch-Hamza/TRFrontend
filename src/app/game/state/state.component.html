@@ -1,36 +1,48 @@
 <div class="mt-2">
-    <div *ngIf="game.state == 1 && router.url === '/screen'" class="row justify-content-center get-ready text-center">Teams are getting ready</div>
-    <div *ngIf="game.state == 2 && router.url === '/screen'" class="row justify-content-center get-ready">
-        <span class="animated bounceInLeft slow">Ready,</span>
-        <span class="animated bounceInLeft delay-3s">&nbsp; Set,</span>
-        <span class="animated bounceInLeft delay-4s">&nbsp; Go!</span>
-    </div>
-    <!--div class="row justify-content-center" *ngIf="game.state == 3 && router.url === '/screen'">
-        <div class="col-2">
-            <img class="img-fluid tr-logo" src="../../../assets/img/TR.png" alt="">
+    <div *ngIf="(game.state == 1 || game.state == 4) && router.url === '/screen'" class="row justify-content-center get-ready text-center" style="margin-top: 250px;">
+        <img src="../../../assets/img/readyy.png" class="animated fadeInUp delay-3s" alt="" style="height: 800px;">
+        
+        <div class="screen-clock pos-abs centered centered-two" *ngIf="game.state == 1">
+            <span class="animated fadeInUp delay-scoreboard">Teams are getting ready</span>
+        </div>
+
+        <div class="screen-clock pos-abs centered centered-two" *ngIf="game.state == 4">
+            <span class="animated fadeInUp delay-scoreboard">Calculating Score</span>
+        </div>
+
+        <div class="screen-clock pos-abs centered clock-waiting">
+            <countdown [config]="{leftTime: this.timer }"><span class="animated bounceInDown delay-scoreboard">$!m!:$!s!</span></countdown>
         </div>
     </div>
-    <div *ngIf="game.state == 3 && router.url === '/screen'" class="row justify-content-center">
-        <div class="col-5 row">
-            <div class="col-3">
-                    <img src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="" style="width: 66px;">
-            </div>
-            <div class="col-9 row justify-content-center align-items-center team-name">
-                <span>{{ game.teams[0].name }}</span>
+    <div *ngIf="game.state == 2 && router.url === '/screen'" class="row justify-content-center" style="margin-top: 250px">
+        <video src="../../../assets/animation/trans1.m4v" class="pos-abs" autoplay style="height: 350px;margin-top: -12%;z-index: -1;"></video>
+        <video src="../../../assets/animation/match_is_starting .mp4" autoplay class="mt-5" style="height: 500px;z-index: 0;"></video>
+        <div class="pos-abs left-left-ready" style="z-index: 1;">
+            <img src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="" class="animated bounceInDown delay-scoreboard" style="width: 66px;">
+        </div>
+        <div class="col-3 row justify-content-center pos-abs left-ready" style="z-index: 1;">
+            <div class=" row justify-content-center">
+                <div class="text-center animated bounceInDown delay-scoreboard">{{ game.teams[0].name }}</div>
             </div>
         </div>
-        <div class="col-2 row justify-content-center align-content-center screen-clock ">
-            <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
+        <div class="screen-clock pos-abs centered-ready" style="z-index: 1;">
+            <countdown [config]="{leftTime: this.timer }"><span class="animated bounceInDown delay-scoreboard">$!m!:$!s!</span></countdown>
         </div>
-        <div class="col-5 row">
-            <div class="col-9 row justify-content-center align-items-center team-name1">
-                <span>{{ game.teams[1].name }}</span>
-            </div>
-            <div class="col-3 ml-2">
-                <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" style="width: 66px;">
+
+        <div class="pos-abs right-right-ready" style="z-index: 1;">
+            <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" class="animated bounceInDown delay-scoreboard" style="width: 66px;">
+        </div>
+        <div class="col-3 row justify-content-center pos-abs right-ready" style="z-index: 1;">
+            <div class=" row justify-content-center">
+                <div class="text-center animated bounceInDown delay-scoreboard">{{ game.teams[1].name }}</div>
             </div>
         </div>
-    </div-->
+    </div>
+
+    <div *ngIf="game.state == 6 && router.url == '/screen'" class="row justify-content-center" style="margin-top:180px">
+        <video src="../../../assets/animation/comp_green.mp4" class="col-10 mt-5 scoreboard" autoplay loop style="height: 50%;"></video>
+    </div>
+    
     <div *ngIf="game.state == 4 && router.url === '/screen'" class="row justify-content-center get-ready">Calculating Score</div>
     
     <div *ngIf="router.url === '/game' && authority == 'ROLE_ADMIN'">
@@ -41,39 +53,70 @@
             Game State: {{ game.state }}
         </div>
     </div>
-
-    <div *ngIf="router.url === '/screen' && (game.state == 1 || game.state == 2)" class="row justify-content-center wait-clock">
-        <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
-    </div>
     <div *ngIf="router.url === '/game' && authority == 'ROLE_ADMIN'" class="row justify-content-center">
         <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
     </div>
 
     <div class="row justify-content-center scoreboard" *ngIf="game.state == 3 && router.url === '/screen'">
-        <img src="../../../assets/img/scoreboard1.png" alt="" style="height: 100px;">
+        <img src="../../../assets/img/scoreboard1.png" class="animated fadeInUp delay-3s" alt="" style="height: 100px;">
         <div class="pos-abs left-left">
-            <img src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="" style="width: 66px;">
+            <img src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="" class="animated bounceInDown delay-scoreboard" style="width: 66px;">
         </div>
         <div class="col-3 row justify-content-center pos-abs left">
             <div class=" row justify-content-center">
-                <div class="text-center">{{ game.teams[0].name }}</div>
+                <div class="text-center animated bounceInDown delay-scoreboard">{{ game.teams[0].name }}</div>
             </div>
         </div>
-        <div class="screen-clock pos-abs centered" *ngIf="game.competition != 'SUMO'">
-            <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
+        <div class="screen-clock pos-abs centered">
+            <countdown [config]="{leftTime: this.timer }"><span class="animated bounceInDown delay-scoreboard">$!m!:$!s!</span></countdown>
         </div>
 
         <div class="pos-abs right-right">
-            <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" style="width: 66px;">
+            <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" class="animated bounceInDown delay-scoreboard" style="width: 66px;">
         </div>
-        <div class="col-3 row justify-content-center pos-abs right" style="">
+        <div class="col-3 row justify-content-center pos-abs right">
             <div class=" row justify-content-center">
-                <div class="text-center">{{ game.teams[1].name }}</div>
+                <div class="text-center animated bounceInDown delay-scoreboard">{{ game.teams[1].name }}</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="game.state == 3 && router.url === '/screen'" class="row justify-content-center">
+        <span class="comp-name mr-4 animated fadeInUp delay-scoreboard">{{game.competition}}</span>
+    </div>
+
+
+    <div class="row justify-content-center scoreboard" *ngIf="game.state == 5 && router.url === '/screen'" style="margin-top: 250px;">
+        <img src="../../../assets/img/fulltime.png" class="animated fadeInUp delay-3s" alt="" style="height: 400px;">
+        <div class="pos-abs left-left1">
+            <img src="../../../assets/img/teams/{{ game.teams[0].image }}" class="animated fadeInUp delay-scoreboard" alt="" style="width: 133px;">
+        </div>
+        <div class="col-3 row justify-content-center pos-abs left1 animated fadeInUp delay-3s">
+            <div class=" row justify-content-center animated fadeInUp delay-scoreboard">
+                <div class="text-center col-10 animated fadeInUp delay-3s">{{ game.teams[0].name }}</div>
+                <div class="pos-abs score1pos col-10 text-center">
+                    {{game.teams[0].score.score}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen-clock pos-abs centered1">
+            <countdown [config]="{leftTime: this.timer }"><span class="animated bounceInDown delay-scoreboard">$!m!:$!s!</span></countdown>
+        </div>
+
+        <div class="pos-abs right-right1">
+            <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" class="animated fadeInUp delay-scoreboard" style="width: 133px;">
+        </div>
+        <div class="col-3 row justify-content-center pos-abs right1 animated fadeInUp delay-3s">
+            <div class="row justify-content-center animated fadeInUp delay-scoreboard">
+                <div class="text-center animated fadeInUp delay-3s col-10">{{ game.teams[1].name }}</div>
+                <div class="pos-abs score2pos col-10 text-center">
+                    {{game.teams[1].score.score}}
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="row justify-content-center mt-5" *ngIf="((game.state != 3 && game.state != 0 && game.state != 6) || router.url === '/game') && authority == 'ROLE_ADMIN'">
+    <div class="row justify-content-center mt-5" *ngIf="router.url === '/game' && authority == 'ROLE_ADMIN'">
         <div class="col-4 text-center">
             <div>
                 <img class="rounded-circle displayed" src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="Generic placeholder image" width="200" height="200">
