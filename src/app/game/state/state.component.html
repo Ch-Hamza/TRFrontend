@@ -1,6 +1,39 @@
-<div>
-    <div *ngIf='timer' class="row justify-content-center">{{ timer }}</div>
-    <div *ngIf="router.url === '/game'">
+<div class="mt-2">
+    <div *ngIf="game.state == 1 && router.url === '/screen'" class="row justify-content-center get-ready text-center">Teams are getting ready</div>
+    <div *ngIf="game.state == 2 && router.url === '/screen'" class="row justify-content-center get-ready">
+        <span class="animated bounceInLeft slow">Ready,</span>
+        <span class="animated bounceInLeft delay-3s">&nbsp; Set,</span>
+        <span class="animated bounceInLeft delay-4s">&nbsp; Go!</span>
+    </div>
+    <!--div class="row justify-content-center" *ngIf="game.state == 3 && router.url === '/screen'">
+        <div class="col-2">
+            <img class="img-fluid tr-logo" src="../../../assets/img/TR.png" alt="">
+        </div>
+    </div>
+    <div *ngIf="game.state == 3 && router.url === '/screen'" class="row justify-content-center">
+        <div class="col-5 row">
+            <div class="col-3">
+                    <img src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="" style="width: 66px;">
+            </div>
+            <div class="col-9 row justify-content-center align-items-center team-name">
+                <span>{{ game.teams[0].name }}</span>
+            </div>
+        </div>
+        <div class="col-2 row justify-content-center align-content-center screen-clock ">
+            <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
+        </div>
+        <div class="col-5 row">
+            <div class="col-9 row justify-content-center align-items-center team-name1">
+                <span>{{ game.teams[1].name }}</span>
+            </div>
+            <div class="col-3 ml-2">
+                <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" style="width: 66px;">
+            </div>
+        </div>
+    </div-->
+    <div *ngIf="game.state == 4 && router.url === '/screen'" class="row justify-content-center get-ready">Calculating Score</div>
+    
+    <div *ngIf="router.url === '/game' && authority == 'ROLE_ADMIN'">
         <div *ngIf='timer' class="row justify-content-center">
             Competition: {{ game.competition }}
         </div>
@@ -8,12 +41,557 @@
             Game State: {{ game.state }}
         </div>
     </div>
-    
-    <div class="row justify-content-center mt-5">
-        <div class="col-6 text-center" *ngFor="let team of game.teams">
-            <div>Team Name: {{ team.name }}</div>
-            <div>Team Logo: {{ team.image }}</div>
-            <div>Team Score: {{ team.score }}</div>
+
+    <div *ngIf="router.url === '/screen' && (game.state == 1 || game.state == 2)" class="row justify-content-center wait-clock">
+        <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
+    </div>
+    <div *ngIf="router.url === '/game' && authority == 'ROLE_ADMIN'" class="row justify-content-center">
+        <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
+    </div>
+
+    <div class="row justify-content-center scoreboard" *ngIf="game.state == 3 && router.url === '/screen'">
+        <img src="../../../assets/img/scoreboard1.png" alt="" style="height: 100px;">
+        <div class="pos-abs left-left">
+            <img src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="" style="width: 66px;">
+        </div>
+        <div class="col-3 row justify-content-center pos-abs left">
+            <div class=" row justify-content-center">
+                <div class="text-center">{{ game.teams[0].name }}</div>
+            </div>
+        </div>
+        <div class="screen-clock pos-abs centered" *ngIf="game.competition != 'SUMO'">
+            <countdown [config]="{leftTime: this.timer }"><span>$!m!:$!s!</span></countdown>
+        </div>
+
+        <div class="pos-abs right-right">
+            <img src="../../../assets/img/teams/{{ game.teams[1].image }}" alt="" style="width: 66px;">
+        </div>
+        <div class="col-3 row justify-content-center pos-abs right" style="">
+            <div class=" row justify-content-center">
+                <div class="text-center">{{ game.teams[1].name }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5" *ngIf="((game.state != 3 && game.state != 0 && game.state != 6) || router.url === '/game') && authority == 'ROLE_ADMIN'">
+        <div class="col-4 text-center">
+            <div>
+                <img class="rounded-circle displayed" src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="Generic placeholder image" width="200" height="200">
+                <h2 class="textcenter" style="color: #8A1112"><b>{{ game.teams[0].name }}</b></h2>
+                <h2 *ngIf='game.state == 5' class="textcenter" style="color: #8A1112"><b>{{ game.teams[0].score.score }}</b></h2>
+            </div>
+        </div>
+        <div class="col-4 row justify-content-center mb-5">
+            <img class="img-fluid" src="../../assets/img/TR10th.png" alt="" style="object-fit: cover;width: 350px !important; height: 350px;">
+        </div>
+        <div class="col-4 text-center">
+            <div>
+                <img class="rounded-circle displayed" src="../../../assets/img/teams/{{ game.teams[0].image }}" alt="Generic placeholder image" width="200" height="200">
+                <h2 class="textcenter" style="color: #8A1112"><b>{{ game.teams[1].name }}</b></h2>
+                <h2 *ngIf='game.state == 5' class="textcenter" style="color: #8A1112"><b>{{ game.teams[1].score.score }}</b></h2>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="authority != 'ROLE_ADMIN' && game.competition == 'JUNIOR'" style="margin-top: 80px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header mt-5">
+                    <h1 class="title">Score {{ game.teams[0].name }}</h1>
+                </div>
+                <div class="card-body">
+                    <h3 class="title text-center">Première phase</h3>
+                    <br>
+                    <form name="juniorform" (ngSubmit)="onSubmit()" novalidate>
+                        <div class="card">
+                            <h5 class="title text-center card-header">Points à donner</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Passage par le trait d'arrivage (+40) :</label>
+                                    <input [(ngModel)]="formJunior.passage" type="checkbox" name="passage"  value="{{passage}}" class="h-100 mr-3">
+                                </div>
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Un ballon dégonflé (+10):</label>
+                                    <input [(ngModel)]="formJunior.ballon" type="checkbox" name="ballon"  value="{{ballon}}" class="h-100 mr-3">
+                                </div>
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Passage par la porte correcte (+30) :</label>
+                                    <input [(ngModel)]="formJunior.passagep" type="checkbox" name="porte"  value="{{passagep}}" class="h-100 mr-3">
+                                </div>  
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <h5 class="title text-center card-header">Points à retrancher</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Ballons dégonflés plus que un (-5):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formJunior.ballondeg1" type="radio" name="degonfl"  value="0" class="h-100 mr-3">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formJunior.ballondeg1" type="radio" name="degonfl"  value="1" class="h-100 mr-3">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formJunior.ballondeg1" type="radio" name="degonfl"  value="2" class="h-100 mr-3">
+                                </div>
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center col-6">Le robot a touché la bordure (-10):</label>
+                                    <input [(ngModel)]="formJunior.bordure1" type="number" name="bordureone" class="text-center col-2" value="0" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    <br>
+                    <br>
+                    <h3 class="title text-center">Deuxième phase</h3>
+                    <br>
+                        <div class="card">
+                        <h5 class="title text-center card-header">Points à donner</h5>
+                        <div class="row justify-content-center mt-3">
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Ballons dégonflés (+15) :</label>
+                                <span class="mr-1">0</span><input [(ngModel)]="formJunior.ballondeg2" type="radio" name="degonfl2"  value="0" class="h-100 mr-3">
+                                <span class="mr-1">1</span><input [(ngModel)]="formJunior.ballondeg2" type="radio" name="degonfl2"  value="1" class="h-100 mr-3">
+                                <span class="mr-1">2</span><input [(ngModel)]="formJunior.ballondeg2" type="radio" name="degonfl2"  value="2" class="h-100 mr-3">
+                                <span class="mr-1">3</span><input [(ngModel)]="formJunior.ballondeg2" type="radio" name="degonfl2"  value="3" class="h-100 mr-3">
+                            </div>
+                            
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Devoiler la recette secrète (+30):</label>
+                                <input [(ngModel)]="formJunior.recette" type="checkbox" name="recette" class="h-100">
+                                </div>
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Case d'arrivée (double points)</label>
+                                <input [(ngModel)]="formJunior.casea" type="checkbox" name="arrive" class="h-100">
+                            </div> 
+                        </div>  
+                        </div>
+                        <br>
+                        <div class=" card">
+                            <h5 class="title text-center card-header">Points à retrancher</h5>
+                            <div class="row justify-content-center mt-3">
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Le robot a touché la bordure (-5):</label>
+                                <input [(ngModel)]="formJunior.bordure2" type="number" class="text-center col-2" name="bordureun" value="0">
+                            </div>
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Le robot a touché Un obstacle (-5) :</label>
+                                <input [(ngModel)]="formJunior.obstacle" type="number" class="text-center col-2" name="obs"  value="0">
+                            </div>  
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3 col-6">Le robot a degonflé les ballons de l'adveraire (+15 pour adversaire):</label>
+                                <span class="mr-1">0</span><input [(ngModel)]="formJunior.ballondeg3" type="radio" name="ballonadv"  value="0" class="h-100 mr-3 last-radio">
+                                <span class="mr-1">1</span><input [(ngModel)]="formJunior.ballondeg3" type="radio" name="ballonadv"  value="1" class="h-100 mr-3 last-radio">
+                                <span class="mr-1">2</span><input [(ngModel)]="formJunior.ballondeg3" type="radio" name="ballonadv"  value="2" class="h-100 mr-3 last-radio">
+                                <span class="mr-1">3</span><input [(ngModel)]="formJunior.ballondeg3" type="radio" name="ballonadv"  value="3" class="h-100 mr-3 last-radio">
+                            </div> 
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <div class="card">
+                        <div class="row justify-content-center mt-3">
+                            <h5 class="title text-center ">Le robot a ralenti son adversaire (-20)</h5>
+                            <input [(ngModel)]="formJunior.ralenti" type="checkbox" name="ralenti" class="ml-3 mt-2">
+                        </div>
+                    </div> 
+                    <!--div class="mt-4"> 
+                        <button class="btn btn-success w-100" (click)="onSubmit()">Submit</button>
+                    </div-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="authority != 'ROLE_ADMIN' && game.competition == 'JUNIOR'" style="margin-top: 80px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header mt-5">
+                    <h1 class="title">Score {{ game.teams[1].name }}</h1>
+                </div>
+                <div class="card-body">
+                    <h3 class="title text-center">Première phase</h3>
+                    <br>
+                    <form name="juniorform1" (ngSubmit)="onSubmit()" novalidate>
+                        <div class="card">
+                            <h5 class="title text-center card-header">Points à donner</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Passage par le trait d'arrivage (+40) :</label>
+                                    <input [(ngModel)]="formJunior1.passage" type="checkbox" name="passage"  value="{{passage}}" class="h-100 mr-3">
+                                </div>
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Un ballon dégonflé (+10):</label>
+                                    <input [(ngModel)]="formJunior1.ballon" type="checkbox" name="ballon"  value="{{ballon}}" class="h-100 mr-3">
+                                </div>
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Passage par la porte correcte (+30) :</label>
+                                    <input [(ngModel)]="formJunior1.passagep" type="checkbox" name="porte"  value="{{passagep}}" class="h-100 mr-3">
+                                </div>  
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <h5 class="title text-center card-header">Points à retrancher</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Ballons dégonflés plus que un (-5):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formJunior1.ballondeg1" type="radio" name="degonfl"  value="0" class="h-100 mr-3">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formJunior1.ballondeg1" type="radio" name="degonfl"  value="1" class="h-100 mr-3">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formJunior1.ballondeg1" type="radio" name="degonfl"  value="2" class="h-100 mr-3">
+                                </div>
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center col-6">Le robot a touché la bordure (-10):</label>
+                                    <input [(ngModel)]="formJunior1.bordure1" type="number" name="bordureone" class="text-center col-2" value="0" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    <br>
+                    <br>
+                    <h3 class="title text-center">Deuxième phase</h3>
+                    <br>
+                        <div class="card">
+                        <h5 class="title text-center card-header">Points à donner</h5>
+                        <div class="row justify-content-center mt-3">
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Ballons dégonflés (+15) :</label>
+                                <span class="mr-1">0</span><input [(ngModel)]="formJunior1.ballondeg2" type="radio" name="degonfl2"  value="0" class="h-100 mr-3">
+                                <span class="mr-1">1</span><input [(ngModel)]="formJunior1.ballondeg2" type="radio" name="degonfl2"  value="1" class="h-100 mr-3">
+                                <span class="mr-1">2</span><input [(ngModel)]="formJunior1.ballondeg2" type="radio" name="degonfl2"  value="2" class="h-100 mr-3">
+                                <span class="mr-1">3</span><input [(ngModel)]="formJunior1.ballondeg2" type="radio" name="degonfl2"  value="3" class="h-100 mr-3">
+                            </div>
+                            
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Devoiler la recette secrète (+30):</label>
+                                <input [(ngModel)]="formJunior1.recette" type="checkbox" name="recette" class="h-100">
+                                </div>
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Case d'arrivée (double points)</label>
+                                <input [(ngModel)]="formJunior1.casea" type="checkbox" name="arrive" class="h-100">
+                            </div> 
+                        </div>  
+                        </div>
+                        <br>
+                        <div class=" card">
+                            <h5 class="title text-center card-header">Points à retrancher</h5>
+                            <div class="row justify-content-center mt-3">
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Le robot a touché la bordure (-5):</label>
+                                <input [(ngModel)]="formJunior1.bordure2" type="number" class="text-center col-2" name="bordureun" value="0">
+                            </div>
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3">Le robot a touché Un obstacle (-5) :</label>
+                                <input [(ngModel)]="formJunior1.obstacle" type="number" class="text-center col-2" name="obs"  value="0">
+                            </div>  
+                            <div class="form-group col-8 row justify-content-center">
+                                <label class="title text-center mr-3 col-6">Le robot a degonflé les ballons de l'adveraire (+15 pour adversaire):</label>
+                                <span class="mr-1">0</span><input [(ngModel)]="formJunior1.ballondeg3" type="radio" name="ballonadv"  value="0" class="h-100 mr-3 last-radio">
+                                <span class="mr-1">1</span><input [(ngModel)]="formJunior1.ballondeg3" type="radio" name="ballonadv"  value="1" class="h-100 mr-3 last-radio">
+                                <span class="mr-1">2</span><input [(ngModel)]="formJunior1.ballondeg3" type="radio" name="ballonadv"  value="2" class="h-100 mr-3 last-radio">
+                                <span class="mr-1">3</span><input [(ngModel)]="formJunior1.ballondeg3" type="radio" name="ballonadv"  value="3" class="h-100 mr-3 last-radio">
+                            </div> 
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <div class="card">
+                        <div class="row justify-content-center mt-3">
+                            <h5 class="title text-center ">Le robot a ralenti son adversaire (-20)</h5>
+                            <input [(ngModel)]="formJunior1.ralenti" type="checkbox" name="ralenti" class="ml-3 mt-2">
+                        </div>
+                    </div> 
+                    <div class="mt-4"> 
+                        <button *ngIf="!submitted" class="btn btn-success w-100" (click)="onSubmit()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="authority != 'ROLE_ADMIN' && game.competition == 'SUMO'" style="margin-top: 80px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header mt-5">
+                    <h1 class="title">Who won?</h1>
+                </div>
+                <div class="card-body">
+                    <br>
+                    <form name="sumoform" (ngSubmit)="onSubmitSumo()" novalidate>
+                        <div class="card">
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-8 row justify-content-center">
+                                    <select [(ngModel)]="formSumo.winner" name="win" class="form-group h-100 w-100 mr-3 text-center nazal" style="text-align-last:center; font-family: Azonix;">
+                                        <option value="{{game.teams[0].name}}" class="azon">{{game.teams[0].name}}</option>
+                                        <option value="{{game.teams[1].name}}" class="azon">{{game.teams[1].name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+             
+                    </form>
+                    <br>
+                    
+                    <div class="mt-4"> 
+                        <button *ngIf="!submittedSumo" class="btn btn-success w-100" (click)="onSubmitSumo()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="authority != 'ROLE_ADMIN' && game.competition == 'LTCR'" style="margin-top: 80px;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header mt-5">
+                        <h1 class="title">Score {{ game.teams[0].name }}</h1>
+                    </div>
+                    <div class="card-body">
+                        <br>
+                        <form name="juniorform" (ngSubmit)="onSubmit()" novalidate>
+                            <div class="card">
+                                <h5 class="title text-center card-header">Tournesol</h5>
+                                <div class="row justify-content-center mt-3">
+                                    <div class="form-group col-11 row justify-content-center">
+                                        <label class="title text-center mr-3">Combien de panneaux solaires retournés? (+15):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.panSol" type="radio" name="panSol"  value="0" class="h-100 mr-3">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.panSol" type="radio" name="panSol"  value="1" class="h-100 mr-3">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.panSol" type="radio" name="panSol"  value="2" class="h-100 mr-3">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.panSol" type="radio" name="panSol"  value="3" class="h-100 mr-3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h5 class="title text-center card-header">Il faut degonfler</h5>
+                                <div class="row justify-content-center mt-3">
+                                    <div class="form-group col-10 row justify-content-center">
+                                        <label class="title text-center mr-3">Est ce que il a degonflé un ballon? (+20):</label>
+                                        <input [(ngModel)]="formLtcr.ballonDeg" type="checkbox" name="ballonDeg" class="h-100 mr-3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h5 class="title text-center card-header">Les vents du Nord</h5>
+                                <div class="row justify-content-center mt-3">
+                                    <div class="form-group col-8 row justify-content-center">
+                                        <label class="title text-center mr-3">Elements deplacés (+5):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.elemDep" type="radio" name="elemDep"  value="0" class="h-100 mr-3">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.elemDep" type="radio" name="elemDep"  value="1" class="h-100 mr-3">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.elemDep" type="radio" name="elemDep"  value="2" class="h-100 mr-3">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.elemDep" type="radio" name="elemDep"  value="3" class="h-100 mr-3">
+                                        <span class="mr-1">4</span><input [(ngModel)]="formLtcr.elemDep" type="radio" name="elemDep"  value="4" class="h-100 mr-3">
+                                    </div>
+
+                                    <div class="form-group col-8 row justify-content-center">
+                                        <label class="title text-center mr-3">Eoliennes assemblées (+30):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.eoliennesAss" type="radio" name="eoliennesAss"  value="0" class="h-100 mr-3">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.eoliennesAss" type="radio" name="eoliennesAss"  value="1" class="h-100 mr-3">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.eoliennesAss" type="radio" name="eoliennesAss"  value="2" class="h-100 mr-3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h5 class="title text-center card-header">Pathogène...ou pas?</h5>
+                                <div class="row justify-content-center mt-3">
+                                    <div class="form-group col-10 row justify-content-center">
+                                        <label class="title text-center mr-3 col-4">Nombres de graine placées dans la bonne gaine (+5):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="0" class="h-100 mr-3 last-radio">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="1" class="h-100 mr-3 last-radio">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="2" class="h-100 mr-3 last-radio">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="3" class="h-100 mr-3 last-radio">
+                                        <span class="mr-1">4</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="4" class="h-100 mr-3 last-radio">
+                                        <span class="mr-1">5</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="5" class="h-100 mr-3 last-radio">
+                                        <span class="mr-1">6</span><input [(ngModel)]="formLtcr.graineB" type="radio" name="graineB"  value="6" class="h-100 mr-3 last-radio">
+                                    </div>
+
+                                    <div class="form-group col-10 row justify-content-center">
+                                        <label class="title text-center mr-3 col-4">Nombres de graine placées dans la mauvaise gaine (-5):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="0" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="1" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="2" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="3" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">4</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="4" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">5</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="5" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">6</span><input [(ngModel)]="formLtcr.graineM" type="radio" name="graineM"  value="6" class="h-100 mr-3 last-radio1">
+                                    </div>
+
+                                    <div class="form-group col-8 row justify-content-center">
+                                        <label class="title text-center mr-3">Deplacement du tube de graines (+10):</label>
+                                        <input [(ngModel)]="formLtcr.tubeG" type="checkbox" name="tubeG" class="h-100 mr-3">
+                                    </div>
+
+                                    <div class="form-group col-10 row justify-content-center">
+                                        <label class="title text-center mr-3 col-4">Nombres de graine non pathogène dans le tube à graines (+5):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.graineNP" type="radio" name="graineNP"  value="0" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.graineNP" type="radio" name="graineNP"  value="1" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.graineNP" type="radio" name="graineNP"  value="2" class="h-100 mr-3 last-radio1">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.graineNP" type="radio" name="graineNP"  value="3" class="h-100 mr-3 last-radio1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h5 class="title text-center card-header">Germaine</h5>
+                                <div class="row justify-content-center mt-3">
+                                    <div class="form-group col-10 row justify-content-center">
+                                        <label class="title text-center mr-3 col-4">Nombre de graines enfoncées:</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.graineE" type="radio" name="graineE"  value="0" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.graineE" type="radio" name="graineE"  value="1" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.graineE" type="radio" name="graineE"  value="2" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.graineE" type="radio" name="graineE"  value="3" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">4</span><input [(ngModel)]="formLtcr.graineE" type="radio" name="graineE"  value="4" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">5</span><input [(ngModel)]="formLtcr.graineE" type="radio" name="graineE"  value="5" class="h-100 mr-3 last-radio2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h5 class="title text-center card-header">Reforestation</h5>
+                                <div class="row justify-content-center mt-3">
+                                    <div class="form-group col-10 row justify-content-center">
+                                        <label class="title text-center mr-3 col-4">Nombre d'arbres deplacés (+10):</label>
+                                        <span class="mr-1">0</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="0" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">1</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="1" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">2</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="2" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">3</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="3" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">4</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="4" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">5</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="5" class="h-100 mr-3 last-radio2">
+                                        <span class="mr-1">6</span><input [(ngModel)]="formLtcr.arbreDep" type="radio" name="arbreDep"  value="6" class="h-100 mr-3 last-radio2">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div *ngIf="authority != 'ROLE_ADMIN' && game.competition == 'LTCR'" style="margin-top: 80px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header mt-5">
+                    <h1 class="title">Score {{ game.teams[1].name }}</h1>
+                </div>
+                <div class="card-body">
+                    <br>
+                    <form name="juniorform" (ngSubmit)="onSubmit()" novalidate>
+                        <div class="card">
+                            <h5 class="title text-center card-header">Tournesol</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-11 row justify-content-center">
+                                    <label class="title text-center mr-3">Combien de panneaux solaires retournés? (+15):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.panSol" type="radio" name="panSol"  value="0" class="h-100 mr-3">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.panSol" type="radio" name="panSol"  value="1" class="h-100 mr-3">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.panSol" type="radio" name="panSol"  value="2" class="h-100 mr-3">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.panSol" type="radio" name="panSol"  value="3" class="h-100 mr-3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h5 class="title text-center card-header">Il faut degonfler</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-10 row justify-content-center">
+                                    <label class="title text-center mr-3">Est ce que il a degonflé un ballon? (+20):</label>
+                                    <input [(ngModel)]="formLtcr1.ballonDeg" type="checkbox" name="ballonDeg" class="h-100 mr-3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h5 class="title text-center card-header">Les vents du Nord</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Elements deplacés (+5):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.elemDep" type="radio" name="elemDep"  value="0" class="h-100 mr-3">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.elemDep" type="radio" name="elemDep"  value="1" class="h-100 mr-3">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.elemDep" type="radio" name="elemDep"  value="2" class="h-100 mr-3">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.elemDep" type="radio" name="elemDep"  value="3" class="h-100 mr-3">
+                                    <span class="mr-1">4</span><input [(ngModel)]="formLtcr1.elemDep" type="radio" name="elemDep"  value="4" class="h-100 mr-3">
+                                </div>
+
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Eoliennes assemblées (+30):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.eoliennesAss" type="radio" name="eoliennesAss"  value="0" class="h-100 mr-3">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.eoliennesAss" type="radio" name="eoliennesAss"  value="1" class="h-100 mr-3">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.eoliennesAss" type="radio" name="eoliennesAss"  value="2" class="h-100 mr-3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h5 class="title text-center card-header">Pathogène...ou pas?</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-10 row justify-content-center">
+                                    <label class="title text-center mr-3 col-4">Nombres de graine placées dans la bonne gaine (+5):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="0" class="h-100 mr-3 last-radio">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="1" class="h-100 mr-3 last-radio">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="2" class="h-100 mr-3 last-radio">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="3" class="h-100 mr-3 last-radio">
+                                    <span class="mr-1">4</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="4" class="h-100 mr-3 last-radio">
+                                    <span class="mr-1">5</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="5" class="h-100 mr-3 last-radio">
+                                    <span class="mr-1">6</span><input [(ngModel)]="formLtcr1.graineB" type="radio" name="graineB"  value="6" class="h-100 mr-3 last-radio">
+                                </div>
+
+                                <div class="form-group col-10 row justify-content-center">
+                                    <label class="title text-center mr-3 col-4">Nombres de graine placées dans la mauvaise gaine (-5):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="0" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="1" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="2" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="3" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">4</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="4" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">5</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="5" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">6</span><input [(ngModel)]="formLtcr1.graineM" type="radio" name="graineM"  value="6" class="h-100 mr-3 last-radio1">
+                                </div>
+
+                                <div class="form-group col-8 row justify-content-center">
+                                    <label class="title text-center mr-3">Deplacement du tube de graines (+10):</label>
+                                    <input [(ngModel)]="formLtcr1.tubeG" type="checkbox" name="tubeG" class="h-100 mr-3">
+                                </div>
+
+                                <div class="form-group col-10 row justify-content-center">
+                                    <label class="title text-center mr-3 col-4">Nombres de graine non pathogène dans le tube à graines (+5):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.graineNP" type="radio" name="graineNP"  value="0" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.graineNP" type="radio" name="graineNP"  value="1" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.graineNP" type="radio" name="graineNP"  value="2" class="h-100 mr-3 last-radio1">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.graineNP" type="radio" name="graineNP"  value="3" class="h-100 mr-3 last-radio1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h5 class="title text-center card-header">Germaine</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-10 row justify-content-center">
+                                    <label class="title text-center mr-3 col-4">Nombre de graines enfoncées:</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.graineE" type="radio" name="graineE"  value="0" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.graineE" type="radio" name="graineE"  value="1" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.graineE" type="radio" name="graineE"  value="2" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.graineE" type="radio" name="graineE"  value="3" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">4</span><input [(ngModel)]="formLtcr1.graineE" type="radio" name="graineE"  value="4" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">5</span><input [(ngModel)]="formLtcr1.graineE" type="radio" name="graineE"  value="5" class="h-100 mr-3 last-radio2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h5 class="title text-center card-header">Reforestation</h5>
+                            <div class="row justify-content-center mt-3">
+                                <div class="form-group col-10 row justify-content-center">
+                                    <label class="title text-center mr-3 col-4">Nombre d'arbres deplacés (+10):</label>
+                                    <span class="mr-1">0</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="0" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">1</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="1" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">2</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="2" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">3</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="3" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">4</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="4" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">5</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="5" class="h-100 mr-3 last-radio2">
+                                    <span class="mr-1">6</span><input [(ngModel)]="formLtcr1.arbreDep" type="radio" name="arbreDep"  value="6" class="h-100 mr-3 last-radio2">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-4"> 
+                        <button class="btn btn-success w-100" (click)="onSubmitLtcr()">Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

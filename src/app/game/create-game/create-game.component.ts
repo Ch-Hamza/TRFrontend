@@ -38,7 +38,7 @@ export class CreateGameComponent implements OnInit {
     this.gameService.createTeam(this.game)
       .subscribe(
         data => {
-          console.log(data);
+          //console.log(data);
           this.submitted = true;
         },
         error => console.log(error)
@@ -52,7 +52,7 @@ export class CreateGameComponent implements OnInit {
       if(value['name'] === attr) {
         this.selectedTeams.push(value);
       }
-    })
+    });
   }
 
   onSubmit() {

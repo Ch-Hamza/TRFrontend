@@ -1,0 +1,159 @@
+@import '//fonts.googleapis.com/css?family=Bangers';
+
+@font-face {
+    font-family: Azonix;
+    src: url("../../../assets/fonts/Azonix.otf") format("opentype");
+}
+
+@font-face {
+    font-family: Nasalization;
+    src: url("../../../assets/fonts/nasalization-rg.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: Nasalization;
+    font-weight: bold;
+    src: url("../../../assets/fonts/NasalizationExtendedBold.ttf") format("opentype");
+}
+
+.azon {
+    font-family: Azonix;
+}
+
+.nazal {
+    font-family: Nasalization;
+}
+
+.get-ready {
+    font-size: 5em;
+    color: #8A1112;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
+.team-name {
+    background-color: white;
+    font-size: 2em;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    transform: skew(25deg);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.team-name span {
+    transform: skew(-25deg);
+}
+
+.team-name1 {
+    background-color: white;
+    font-size: 2em;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    transform: skew(-25deg);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.team-name1 span {
+    transform: skew(25deg);
+}
+
+.tr-logo {
+    object-fit: cover;
+    width: 133px !important;
+}
+
+.screen-clock {
+    transform: matrix(1, 0, 0.465, 1, -1, 0);;
+}
+
+.screen-clock countdown {
+    font-family:Azonix;
+    text-align:center;
+    font-size:25px;
+    letter-spacing:2px;
+    color: white;
+}
+
+.wait-clock {
+    font-family:Azonix;
+    text-align:center;
+    font-size: 7em;
+    letter-spacing: 0.2em;
+    color: white;
+}
+
+.scoreboard {
+    position: relative;
+    width: 100%;
+}
+
+.pos-abs {
+    position: absolute;
+}
+
+/* Bottom left text */
+.left-left {
+    top: 20%;
+    left: 15.5%;
+}
+
+.left {
+    top: 32.5%;
+    left: 20%;
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: Nasalization;
+}
+
+/* Centered text */
+.centered {
+    top: 55.3%;
+    left: 50.9%;
+    transform: translate(-50%, -50%);
+}
+
+.right-right {
+    top: 20%;
+    right: 14%;
+}
+
+.right {
+    top: 32.5%;
+    right: 20%;
+    font-size: 1.8em;
+    font-weight: 600;
+    font-family: Nasalization;
+}
+
+input[type="radio"] {
+    margin-top: -3px;
+}
+
+.last-radio {
+    margin-top: -25px !important;
+}
+
+@media screen and (min-width: 1000px) {
+    .last-radio {
+        margin-top: -15px !important;
+    }
+}
+
+.last-radio1 {
+    margin-top: -15px !important;
+}
+
+@media screen and (max-width: 1000px) {
+    .last-radio1 {
+        margin-top: -37px !important;
+    }
+}
+
+.last-radio2 {
+    margin-top: 0;
+}
+
+@media screen and (max-width: 1000px) {
+    .last-radio2 {
+        margin-top: -15px !important;
+    }
+}

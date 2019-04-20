@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { httpInterceptorProviders } from './auth/auth-interceptor';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -14,6 +15,9 @@ import { CreateTeamComponent } from './team/create-team/create-team.component';
 import { GameComponent } from './game/game.component';
 import { CreateGameComponent } from './game/create-game/create-game.component';
 import { StateComponent } from './game/state/state.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
+import { CountdownModule } from 'ngx-countdown';
 
 @NgModule({
   declarations: [
@@ -26,14 +30,18 @@ import { StateComponent } from './game/state/state.component';
     GameComponent,
     CreateGameComponent,
     StateComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
+    CountdownModule
   ],
-  providers: [httpInterceptorProviders],
+  providers: [httpInterceptorProviders, StateComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,33 +3,41 @@
 </div>
  
 <ng-template #loggedOut>
-  <div class="row col-sm-6" style="max-width:350px;">
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
-          required />
-        <div *ngIf="f.submitted && username.invalid">
-          <div *ngIf="username.errors.required">Username is required</div>
-        </div>
+  <div class="row justify-content-center">
+    <img class="img-fluid" src="../../assets/img/TR10th.png" alt="" style="object-fit: cover;">
+  </div>
+  <div class="row justify-content-center">
+      <div class="col-sm-5">
+          <div class="card middle-fix">
+            <div class="card-body">
+              <form name="myForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                  </div>
+                  <input name="username" type="text" class="form-control transparent-cla" placeholder="username" [(ngModel)]="form.username" #username="ngModel" required>	
+                  <div *ngIf="f.submitted && username.invalid">
+                      <div *ngIf="username.errors.required">Username is required</div>
+                  </div>
+                </div>
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                  </div>
+                  <input name="password" type="password" class="form-control transparent-cla" placeholder="password" [(ngModel)]="form.password" #password="ngModel" required>
+                  <div *ngIf="f.submitted && password.invalid">
+                      <div *ngIf="password.errors.required">Password is required</div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button class="btn float-right login_btn btn-primary w-100">Login</button>
+                </div>
+                <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger p-3" style="margin-top: 70px;">
+                  Login failed: {{errorMessage}}
+                </div>
+              </form>	
+              </div>
+          </div>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
-          required />
-        <div *ngIf="f.submitted && password.invalid">
-          <div *ngIf="password.errors.required">Password is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary">Login</button>
-        <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
-          Login failed: {{errorMessage}}
-        </div>
-      </div>
-    </form>
-    <hr />
-    <p>Don't have an account?</p>
-    <a href="signup" class="btn btn-success">Sign Up</a>
   </div>
 </ng-template>

@@ -1,5 +1,7 @@
-<h3>Create Team</h3>
-<div [hidden]="submitted" class="row justify-content-center">
+<div class="row justify-content-center mb-5">
+    <h3 style="margin-top: 80px;">Create Team</h3>
+</div>
+<div [hidden]="submitted" class="row justify-content-center" style="margin-bottom: 171px;">
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Name</label>
@@ -22,9 +24,4 @@
  
     <button type="submit" class="btn btn-success">Submit</button>
   </form>
-</div>
- 
-<div [hidden]="!submitted">
-  <h4>Team created successfully!</h4>
-  <button class="btn btn-success" (click)="newTeam()">Add Team</button>
 </div>

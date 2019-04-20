@@ -1,40 +1,16 @@
-<h3 *ngIf="router.url === '/game'">Current Game</h3>
-<div class="btn btn-success" routerLink="/game/add" *ngIf="router.url === '/game'">New Game</div>
-<div *ngIf="game" class="mt-5">
-
-    <div class="row justify-content-center mt-5" *ngIf="router.url === '/game'">
+<h3 *ngIf="router.url === '/game' && authority == 'ROLE_ADMIN'" style="margin-top: 80px;">Current Game</h3>
+<div class="btn btn-success" routerLink="/game/add" *ngIf="router.url === '/game' && authority === 'ROLE_ADMIN'">New Game</div>
+<div *ngIf="game">
+    <div class="row justify-content-center" *ngIf="router.url === '/game' && authority === 'ROLE_ADMIN'">
         <select name="state" id="state" (change)="onChange($event.target.value)" [(ngModel)]="game.state">
-            <option value="0">0 - </option>
-            <option value="1">1 - </option>
-            <option value="2">2 - </option>
-            <option value="3">3 - </option>
-            <option value="4">4 - </option>
-            <option value="5">5 - </option>
-            <option value="6">6 - </option>
-            <option value="7">7 - </option>
-            <option value="8">8 - </option>
+            <option value="0">0 - Waiting</option>
+            <option value="1">1 - Getting ready</option>
+            <option value="2">2 - Steady</option>
+            <option value="3">3 - In game</option>
+            <option value="4">4 - Completed</option>
+            <option value="5">5 - Validated</option>
+            <option value="6">6 - Done</option>
         </select>
     </div>
-
-    <app-state [game]="game"></app-state>
-
-    <!--div *ngIf="router.url === '/game'">
-        <div *ngIf='timer' class="row justify-content-center">{{ timer }}</div>
-        <div class="row justify-content-center">
-            Competition: {{ game.competition }}
-        </div>
-        <div class="row justify-content-center">
-            Game State: {{ game.state }}
-        </div>
-    
-        
-        
-        <div class="row justify-content-center mt-5">
-            <div class="col-6 text-center" *ngFor="let team of game.teams">
-                <div>Team Name: {{ team.name }}</div>
-                <div>Team Logo: {{ team.image }}</div>
-                <div>Team Score: {{ team.score }}</div>
-            </div>
-        </div>
-    </div-->
+    <app-state [game]="game" [timer]="timer"></app-state>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from 'src/app/models/team';
 import { TeamService } from 'src/app/services/team.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-team',
@@ -12,7 +13,7 @@ export class CreateTeamComponent implements OnInit {
   team: Team = new Team();
   submitted = false;
 
-  constructor(private teamService: TeamService) { }
+  constructor(private teamService: TeamService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -39,6 +40,7 @@ export class CreateTeamComponent implements OnInit {
     var filename = path.replace(/^.*\\/, "");
     this.team.image = filename;
     this.save();
+    this.router.navigate(['teams']);
   }
 
 }

@@ -18,7 +18,7 @@ const routes: Routes = [
     { path: 'teams', component: TeamComponent },
     { path: 'teams/add', component: CreateTeamComponent },
     { path: 'screen', component: GameComponent },
-    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -7,9 +7,10 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private juryUrl = 'http://localhost:8080/api/test/jury';
-  private judgeUrl = 'http://localhost:8080/api/test/judge';
-  private adminUrl = 'http://localhost:8080/api/test/admin';
+  private ip_address = 'http://192.168.1.113';
+  private juryUrl = this.ip_address + ':8080/api/test/jury';
+  private judgeUrl = this.ip_address + ':8080/api/test/judge';
+  private adminUrl = this.ip_address + ':8080/api/test/admin';
  
   constructor(private http: HttpClient) { }
  

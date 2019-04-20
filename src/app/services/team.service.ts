@@ -7,7 +7,9 @@ import { Team } from '../models/team';
   providedIn: 'root'
 })
 export class TeamService {
-  private baseUrl = 'http://localhost:8080/api/teams/';
+
+  private ip_address = 'http://192.168.1.113';
+  private baseUrl = this.ip_address + ':8080/api/teams/';
 
   constructor(private http: HttpClient) { }
 
